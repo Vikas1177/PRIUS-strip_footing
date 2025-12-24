@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIUS – Strip Footing</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Style.css">
+</head>
+
+<body>
+<div class="app-container">
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="toggle-btn" id="hamburger" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="brand">
+                <i class="fa-solid fa-layer-group brand-icon"></i>
+                <span>PRIUS</span>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="#" class="nav-link">Contact</a>
+            <a href="#" class="btn-login">Login</a>
+        </div>
+    </nav>
+
+    <div class="main-layout">
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <div class="mobile-only">
+                    <h4 class="section-title">Menu</h4>
+                    <ul class="code-list mobile-menu">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                    <div class="separator"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h4 class="section-title">IS Codes Used</h4>
+                    <ul class="code-list">
+                        <li><a href="#"><i class="fa-solid fa-file-pdf"></i> IS 1786:2008</a></li>
+                        <li><a href="#"><i class="fa-solid fa-file-pdf"></i> IS 432:1982</a></li>
+                        <li><a href="#"><i class="fa-solid fa-file-pdf"></i> IS 456:2000</a></li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            
+            <div class="card form-card">
+                <div class="card-header">
+                    <h3>Input Parameters</h3>
+                </div>
+
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="openTab(event,'tab-load')">
+                        Load & Foundation
+                    </button>
+                    <button class="tab-btn" onclick="openTab(event,'tab-soil')">
+                        Soil Parameters
+                    </button>
+                </div>
+
+                <form id="paramForm">
+                    <div id="tab-load" class="tab-content active">
+                        <div class="row">
+                            <div class="group">
+                                <label>Dead Load (kN)</label>
+                                <input type="text" id="dead-load">
+                            </div>
+                            <div class="group">
+                                <label>Live Load (kN)</label>
+                                <input type="text" id="live-load">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="group">
+                                <label>Width (m)</label>
+                                <input type="text" id="width">
+                            </div>
+                            <div class="group">
+                                <label>Depth (m)</label>
+                                <input type="text" id="depth">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-soil" class="tab-content">
+                        <div class="row">
+                            <div class="group">
+                                <label>Cohesion (c)</label>
+                                <input type="text" id="cohesion">
+                            </div>
+                            <div class="group">
+                                <label>Phi (°)</label>
+                                <input type="text" id="friction">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="group">
+                                <label>Density (kN/m³)</label>
+                                <input type="text" id="density">
+                            </div>
+                            <div class="group">
+                                <label>Water Table (m)</label>
+                                <input type="text" id="ground-watertable">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="resetOutput()">Reset</button>
+                        <button type="button" onclick="calculate()" class="btn-primary">Calculate</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card output-card">
+                <div class="card-header">
+                    <h3>Output</h3>
+                </div>
+                <div class="output-body" id="output-body">
+                    <div class="state-empty">
+                        <i class="fa-solid fa-calculator"></i>
+                        <p>No calculation yet</p>
+                        <small>Enter parameters above and click Calculate</small>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <section class="results-area">
+            <div class="card">
+                <div class="card-header">
+                    <h3>3D Visualization</h3>
+                </div>
+                <div class="visualization-content">
+                    <div class="placeholder-graphic">
+                        <i class="fa-solid fa-cube"></i>
+                        <p>Graphic / 3D View Area</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="app-footer">
+        <span>Developed by: Vikas, Sourav, Ankit</span>
+        <span>Mentored by: Dr. Akshay Pratap Singh</span>
+    </footer>
+
+</div>
+
+<script src="Script.js"></script>
+</body>
+</html>
