@@ -1,25 +1,15 @@
-/* ================= UI CONTROL LOGIC ================= */
-
-/**
- * Handles the sidebar behavior for both mobile (overlay) and desktop (collapse)
- */
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const isMobile = window.innerWidth <= 900;
 
     if (isMobile) {
-        // MOBILE → dropdown overlay toggle
         sidebar.classList.toggle('open');
         document.body.classList.toggle('sidebar-open');
     } else {
-        // DESKTOP → side collapse toggle
         sidebar.classList.toggle('collapsed');
     }
 }
 
-/**
- * Handles switching between "Load & Foundation" and "Soil Parameters" tabs
- */
 function openTab(evt, tabId) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -28,14 +18,11 @@ function openTab(evt, tabId) {
     evt.currentTarget.classList.add('active');
 }
 
-/**
- * Resets the form inputs and restores the output section to its default "Empty" state
- */
 function resetOutput() {
     const outputBody = document.getElementById("output-body");
     const form = document.getElementById("paramForm");
     
-    if (form) form.reset(); // Reset input fields
+    if (form) form.reset();
     
     if (outputBody) {
         outputBody.innerHTML = `
@@ -48,21 +35,16 @@ function resetOutput() {
     }
 }
 
-/* ================= DATA ACQUISITION ================= */
-
 function getVal(id) { 
     return parseFloat(document.getElementById(id).value); 
 }
 
-// Keeping original naming for calculation internal calls
 function getphi() { return getVal("friction"); }
 function getcohesion() { return getVal("cohesion"); }
 function getdrydensity() { return getVal("density"); }
 function getwidth() { return getVal("width"); }
 function getdepth() { return getVal("depth"); }
 function getgroundwater() { return getVal("ground-watertable"); }
-
-/* ================= MATHEMATICAL FUNCTIONS ================= */
 
 function tan(phi) {
     return Math.tan((phi * Math.PI) / 180);
@@ -112,8 +94,6 @@ function Nc() {
     return cos(phi) * (Nqval - 1);
 }
 
-/* ================= BEARING CAPACITY CALCULATIONS ================= */
-
 function Qv() {
     let phi = getphi();
     let cohesion = getcohesion();
@@ -127,16 +107,13 @@ function Qv() {
 
     let Qv_result = 0;
 
-    // Condition 1: Water table is deep
     if (groundwater >= (depth + width)) {
         Qv_result = (cohesion * Ncval) + (drydensity * depth * Nqval) + (0.5 * drydensity * width * Nyval);
     }
-    // Condition 2: Water table is between foundation level and wedge depth
     else if ((groundwater > depth) && (groundwater < (depth + width))) {
         let term3 = 0.5 * Nyval * ((drydensity * (groundwater - depth)) + ((drydensity - 9.81) * (depth + width - groundwater)));
         Qv_result = (cohesion * Ncval) + (drydensity * depth * Nqval) + term3;
     }
-    // Condition 3: Water table is at or above foundation level
     else if (groundwater <= depth) {
         let term2 = ((drydensity * groundwater) + ((drydensity - 9.81) * (depth - groundwater))) * Nqval;
         let term3 = 0.5 * (drydensity - 9.81) * width * Nyval;
@@ -146,11 +123,8 @@ function Qv() {
         return 0;
     }
 
-    // Preserve original rounding logic: floor to 3 decimal places
     return Math.floor(Qv_result * 1000) / 1000;
 }
-
-/* ================= EXECUTION LOGIC ================= */
 
 function calculate() {
     const phi = getphi();
@@ -164,7 +138,6 @@ function calculate() {
 
     const outputBody = document.getElementById("output-body");
 
-    // 1. VALIDATION CHECK
     if (isNaN(phi) || isNaN(depth) || isNaN(gamma) || isNaN(width) || isNaN(gw) || isNaN(cohesion) || isNaN(dead) || isNaN(live)) {
         outputBody.innerHTML = `
             <div class="state-error">
@@ -176,13 +149,11 @@ function calculate() {
         return;
     }
 
-    // 2. CALCULATION EXECUTION
     const Qvval = Qv();
     const Qnuval = Qvval - (gamma * depth);
     const Qnsval = Qnuval / 2.5;
     const Qsval = Qnsval + (gamma * depth);
 
-    // 3. SUCCESS OUTPUT
     outputBody.innerHTML = `
         <div class="state-success">
             <div class="result-item">
