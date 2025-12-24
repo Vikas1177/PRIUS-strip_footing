@@ -442,6 +442,10 @@ input:focus {
 }
 
 @media (max-width: 900px) {
+   body {
+    overflow-y: auto;
+    height: auto;
+  }
   .nav-right .nav-link {
     display: none;
   }
